@@ -268,8 +268,11 @@ def getLemmaSequence(meta):
         # pass
 
       # Nouns
-      elif word['upos'] == 'NOUN' or word['upos'] == 'PRON':
+      elif word['upos'] == 'NOUN':
         translation.append(word)
+
+      elif word['upos'] == 'PRON':
+        pass
 
       # Adverbs modify verbs, leave for wh questions
       elif word['upos']=='ADV':
@@ -319,8 +322,9 @@ def main():
       # "I'm Javier.",
       # "My name is Javier.",
       # "Bring your computer!",
+      # "It's lunchtime!",
       # "Small dogs are cute",
-      # "Chihuahuas are cute because they're small."
+      "Chihuahuas are cute because they're small."
     ]
 
     if len(tests) == 0:
