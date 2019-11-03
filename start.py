@@ -105,7 +105,7 @@ def parse(text):
 
     result = []
     for word in translation[0]:
-      result.append((word.text.lower(), word.lemma.lower()))
+      result.append((word['text'].lower(), word['lemma'].lower()))
     print("\nResult: ", result, "\n")
 
     print ("""
@@ -156,12 +156,13 @@ def getMeta(sentence):
       # Insertion sort
       j = len(words)
       for i, w in enumerate(words):
-        if word.governor <= w.governor:
+        if word.governor <= w['governor']:
           continue
         else:
           j = i
           break
-      words.insert(j, word)
+      # Convert to Python native structure when inserting.
+      words.insert(j, wordToDictionary(word))
   # # Python sort for converted words
   # words.sort(key=attrgetter('governor', 'age')) # , reverse=True
   # words.sort(key=words.__getitem__) # , reverse=True
@@ -195,40 +196,44 @@ def getLemmaSequence(meta):
   translation = []
   for word in meta:
     # Remove blacklisted words
-    if (word.text.lower(), word.lemma.lower()) not in (('is', 'be'), ('the', 'the'), ('of', 'the'), ('is', 'are'), ('by', 'by'), (',', ','), (';', ';'), (':'), (':')):
+    if (word['text'].lower(), word['lemma'].lower()) not in (('is', 'be'), ('the', 'the'), ('of', 'the'), ('is', 'are'), ('by', 'by'), (',', ','), (';', ';'), (':'), (':')):
       
       # Get Tone: get the sentence's tone from the punctuation
-      if word.upos == 'PUNCT':
-        if word.lemma == "?":
+      if word['upos'] == 'PUNCT':
+        if word['lemma'] == "?":
           tone = "?"
-        elif word.lemma == "!":
+        elif word['lemma'] == "!":
           tone = "!"
         else:
           tone = ""
         continue
       
       # Remove symbols and the unknown
-      elif word.upos == 'SYM' or word.upos == 'X':
+      elif word['upos'] == 'SYM' or word['upos'] == 'X':
         continue
       
       # Remove particles
-      if word.upos == 'PART':
+      if word['upos'] == 'PART':
         continue
 
       # Convert proper nouns to finger spell
-      elif word.upos == 'PROPN':
+      elif word['upos'] == 'PROPN':
         fingerSpell = []
-        for letter in word.text.lower():
+        for letter in word['text'].lower():
+          print(letter)
           spell = {}
           spell['text'] = letter
           spell['lemma'] = letter
           # Add fingerspell as individual lemmas
           fingerSpell.append(spell)
+        print(fingerSpell)
+        translation.extend(fingerSpell)
+        print(translation)
 
       # Numbers
-      elif word.upos == 'NUM':
+      elif word['upos'] == 'NUM':
         fingerSpell = []
-        for letter in word.text.lower():
+        for letter in word['text'].lower():
           spell = {}
           # Convert number to fingerspell
           pass
@@ -236,42 +241,45 @@ def getLemmaSequence(meta):
           fingerSpell.append(spell)
 
       # Interjections usually use alternative or special set of signs
-      elif word.upos == 'CCONJ':
+      elif word['upos'] == 'CCONJ':
         translation.append(word)
       
       # Interjections usually use alternative or special set of signs
-      elif word.upos == 'SCONJ':
-        if (word.text.lower(), word.lemma.lower() not in (('that', 'that'))):
+      elif word['upos'] == 'SCONJ':
+        if (word['text'].lower(), word['lemma'].lower() not in (('that', 'that'))):
           translation.append(word)
       
       # Interjections usually use alternative or special set of signs
-      elif word.upos == 'INTJ':
+      elif word['upos'] == 'INTJ':
         translation.append(word)
 
       # Adpositions could modify nouns
-      elif word.upos=='ADP':
-        translation.append(word)
-        # pass
+      elif word['upos']=='ADP':
+        # translation.append(word)
+        pass
 
       # Determinants modify noun intensity
-      elif word.upos=='DET':
+      elif word['upos']=='DET':
         pass
 
       # Adjectives modify nouns and verbs
-      elif word.upos=='ADJ':
+      elif word['upos']=='ADJ':
         translation.append(word)
         # pass
 
       # Nouns
-      elif word.upos == 'NOUN' or word.upos == 'PRON':
+      elif word['upos'] == 'NOUN' or word['upos'] == 'PRON':
         translation.append(word)
 
-      # Adverbs modify verbs
-      elif word.upos=='ADV' or word.upos=='AUX':
+      # Adverbs modify verbs, leave for wh questions
+      elif word['upos']=='ADV':
         translation.append(word)
+      
+      elif word['upos']=='AUX':
+        pass
 
       # Verbs
-      elif word.upos=='VERB' or word.upos=='':
+      elif word['upos']=='VERB':
         translation.append(word)
 
   # translation = tree
@@ -287,7 +295,7 @@ def display(translation):
   filePrefix = folder + "/videos/"
   # Alter ASL lemmas to match sign's file names.
   # In production, these paths would be stored at the dictionary's database.
-  files = [ filePrefix + word.text.lower() + "_.mp4" for word in translation[0] ]
+  files = [ filePrefix + word['text'].lower() + "_.mp4" for word in translation[0] ]
   # Run video sequence using the MLT Multimedia Framework
   print("Running command: ", ["melt"] + files)
   process = subprocess.Popen(["melt"] + files + [filePrefix + "black.mp4"], stdout=subprocess.PIPE)
@@ -305,32 +313,36 @@ def main():
   └─┘┴ ┴ ┴ ┴ ┴└─┘┴└─  └─┘┴  └─┘└─┘└─┘┴ ┴
     """)
 
-    # tests = []
     tests = [
+      # "Where is the bathroom?",
       # "What is your name?",
+      # "I'm Javier.",
       # "My name is Javier.",
       # "Bring your computer!",
-      # "Where is the bathroom?",
-      # "Ana was on her way to school when she suddenly remembered!"
+      # "Small dogs are cute",
+      # "Chihuahuas are cute because they're small."
     ]
 
     if len(tests) == 0:
       tests = tests + [ getSpeech() ]
 
-    for text in tests:
-      print ("""
+    if len(tests[0]) == 0:
+      print("No speech detected... Reattempting.")
+    else:
+      for text in tests:
+        print ("""
   ┌─┐┌┐┌┌─┐┬ ┬ ┬┌─┐┌─┐  ┌─┐┌┐┌┌─┐┬  ┬┌─┐┬ ┬
   ├─┤│││├─┤│ └┬┘└─┐├┤   ├┤ ││││ ┬│  │└─┐├─┤
   ┴ ┴┘└┘┴ ┴┴─┘┴ └─┘└─┘  └─┘┘└┘└─┘┴─┘┴└─┘┴ ┴
-      """)
+        """)
 
-      print("Text to process: ", text, "\n")
+        print("Text to process: ", text, "\n")
 
-      parse(text)
+        parse(text)
 
-      print('\nPress "Enter" to continue or any type anything else to exit.')
-      key = input()
-      if key != '':
-        flag = True
+        print('\nPress "Enter" to continue or any type anything else to exit.')
+        key = input()
+        if key != '':
+          flag = True
 
 main()
