@@ -294,34 +294,43 @@ def display(translation):
   result = process.communicate()
 
 def main():
-  # Get text
-  print ("""
+
+  flag = False
+
+  while not flag:
+    # Get text
+    print ("""
   ┌─┐┌─┐┌┬┐┬ ┬┌─┐┬─┐  ┌─┐┌─┐┌─┐┌─┐┌─┐┬ ┬
   │ ┬├─┤ │ ├─┤├┤ ├┬┘  └─┐├─┘├┤ ├┤ │  ├─┤
   └─┘┴ ┴ ┴ ┴ ┴└─┘┴└─  └─┘┴  └─┘└─┘└─┘┴ ┴
-  """)
+    """)
 
-  # tests = []
-  tests = [
-    "What is your name?",
-    # "My name is Javier.",
-    # "Bring your computer!",
-    # "Where is the bathroom?",
-    # "Ana was on her way to school when she suddenly remembered!"
-  ]
+    # tests = []
+    tests = [
+      # "What is your name?",
+      # "My name is Javier.",
+      # "Bring your computer!",
+      # "Where is the bathroom?",
+      # "Ana was on her way to school when she suddenly remembered!"
+    ]
 
-  if len(tests) == 0:
-    tests = tests + [ getSpeech() ]
+    if len(tests) == 0:
+      tests = tests + [ getSpeech() ]
 
-  for text in tests:
-    print ("""
+    for text in tests:
+      print ("""
   ┌─┐┌┐┌┌─┐┬ ┬ ┬┌─┐┌─┐  ┌─┐┌┐┌┌─┐┬  ┬┌─┐┬ ┬
   ├─┤│││├─┤│ └┬┘└─┐├┤   ├┤ ││││ ┬│  │└─┐├─┤
   ┴ ┴┘└┘┴ ┴┴─┘┴ └─┘└─┘  └─┘┘└┘└─┘┴─┘┴└─┘┴ ┴
-    """)
+      """)
 
-    print("Text to process: ", text, "\n")
+      print("Text to process: ", text, "\n")
 
-    parse(text)
+      parse(text)
+
+      print('\nPress "Enter" to continue or any type anything else to exit.')
+      key = input()
+      if key != '':
+        flag = True
 
 main()
