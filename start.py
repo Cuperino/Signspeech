@@ -324,7 +324,7 @@ def main():
       # "Bring your computer!",
       # "It's lunchtime!",
       # "Small dogs are cute",
-      "Chihuahuas are cute because they're small."
+      # "Chihuahuas are cute because they're small."
     ]
 
     if len(tests) == 0:
