@@ -267,12 +267,13 @@ def getLemmaSequence(meta):
         translation.append(word)
         # pass
 
+      # Pronouns
+      elif word['upos'] == 'PRON' and word['dependency_relation'] not in ('nsubj'):
+        translation.append(word)
+
       # Nouns
       elif word['upos'] == 'NOUN':
         translation.append(word)
-
-      elif word['upos'] == 'PRON':
-        pass
 
       # Adverbs modify verbs, leave for wh questions
       elif word['upos']=='ADV':
@@ -319,7 +320,7 @@ def main():
     tests = [
       # "Where is the bathroom?",
       # "What is your name?",
-      # "I'm Javier.",
+      "I'm Javier.",
       # "My name is Javier.",
       # "Bring your computer!",
       # "It's lunchtime!",
