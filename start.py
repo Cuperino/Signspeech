@@ -320,7 +320,7 @@ def main():
     tests = [
       # "Where is the bathroom?",
       # "What is your name?",
-      "I'm Javier.",
+      # "I'm Javier.",
       # "My name is Javier.",
       # "Bring your computer!",
       # "It's lunchtime!",
