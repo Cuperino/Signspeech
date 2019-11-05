@@ -50,10 +50,10 @@ nlp = stanfordnlp.Pipeline(processors='tokenize,mwt,pos,lemma,depparse', treeban
 def getSpeech():
   # Creates an instance of a speech config with specified subscription key and service region.
   # Replace with your own subscription key and service region (e.g., "westus").
-  with open('../../keys/speech_key.txt','r') as f_open:
+  with open('keys/speech_key.txt','r') as f_open:
       speech_key = f_open.read()
       f_open.close()
-  with open('../../keys/speech_region.txt','r') as f_open:
+  with open('keys/speech_region.txt','r') as f_open:
       service_region = f_open.read()
       f_open.close()
 
