@@ -4,6 +4,9 @@ English to American Sign Language (ASL) translation software prototype developed
 
 Signspeech is capable of translating basic sentences from English to American Sign Language (ASL). Speech is gathered using a Speech to Text API. Text is decomposed using the Stanford NLP library and further processed into an ALS syntax. Using the sequence of annotated words, the program plays a sequence of videos using the MLT Multimedia Framework.
 
+[![English to ASL Translation AI - Signspeech (Live Test)](https://img.youtube.com/vi/DlYEgU-REjg/0.jpg)](https://youtu.be/DlYEgU-REjg)
+
+
 ## How to Install
 
 This program is written in Python, you must have Python 3.6 or newer installed on your computer to run it.
