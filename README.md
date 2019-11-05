@@ -37,16 +37,20 @@ The machine will generate a sequence of ASL words and their lemmas, in English. 
 
 ## Gallery
 
-!(https://imaginary.tech/wp-content/uploads/sites/4/2019/11/1.png)
+![](https://imaginary.tech/wp-content/uploads/sites/4/2019/11/1.png)
+
 Speech is gathered using a Speech to Text API.
 
-!(https://imaginary.tech/wp-content/uploads/sites/4/2019/11/2.png)
+![](https://imaginary.tech/wp-content/uploads/sites/4/2019/11/2.png)
+
 Text is decomposed using the Stanford NLP library and further processed into an ALS syntax.
 
-!(https://imaginary.tech/wp-content/uploads/sites/4/2019/11/3.png)
+![](https://imaginary.tech/wp-content/uploads/sites/4/2019/11/3.png)
+
 Using the sequence of annotated words, the program plays a sequence of videos using the Melt Multimedia Framework.
 
-!(https://imaginary.tech/wp-content/uploads/sites/4/2019/11/4.png)
+![](https://imaginary.tech/wp-content/uploads/sites/4/2019/11/4.png)
+
 Sign videoclip Copyright by Signing Savvy, LLC. Used for demonstrative educational purposes.
 
 ## Disclaimers
